@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import med.voll.api.doctor.DoctorRegisterPayload;
+import med.voll.api.client.ClientRegisterPayload;
 
 @RestController
-@RequestMapping("doctors")
-public class DoctorController {
+@RequestMapping("clients")
+public class ClientController {
 
 	@PostMapping
-	public void register(@RequestBody DoctorRegisterPayload req) {
+	public void register(@RequestBody ClientRegisterPayload req) {
 		System.out.println(req);
 	}
 
