@@ -1,9 +1,7 @@
-package med.voll.api.doctor;
+package med.voll.api.client;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,13 +12,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import med.voll.api.address.Address;
 
-@Table(name = "doctors")
-@Entity(name = "Doctor")
+@Table(name = "clients")
+@Entity(name = "Client")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Doctor {
+public class Client {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -28,20 +26,16 @@ public class Doctor {
 	private String name;
 	private String email;
 	private String phone;
-	private String crm;
-	
-	@Enumerated(EnumType.STRING)
-	private Specialty specialty;
+	private String cpf;
 	
 	@Embedded
 	private Address address;
 	
-	public Doctor(DoctorRegisterPayload req) {
+	public Client(ClientRegisterPayload req) {
 		this.name = req.name();
 		this.email = req.email();
 		this.phone = req.phone();
-		this.crm = req.crm();
-		this.specialty = req.specialty();
+		this.cpf = req.cpf();
 		this.address = new Address(req.address());
 	}
 }
