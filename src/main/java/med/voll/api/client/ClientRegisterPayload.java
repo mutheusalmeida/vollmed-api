@@ -1,12 +1,12 @@
 package med.voll.api.client;
 
-import med.voll.api.address.Address;
+import med.voll.api.address.AddressRegisterPayload;
 
 public record ClientRegisterPayload(
 		String name,
 		String email,
 		String phone,
-		Address address
+		AddressRegisterPayload address
 		) {
 
 }

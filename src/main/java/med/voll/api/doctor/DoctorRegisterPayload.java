@@ -1,6 +1,6 @@
 package med.voll.api.doctor;
 
-import med.voll.api.address.Address;
+import med.voll.api.address.AddressRegisterPayload;
 
 public record DoctorRegisterPayload(
 		String name,
@@ -8,7 +8,7 @@ public record DoctorRegisterPayload(
 		String phone,
 		String crm,
 		Specialty specialty,
-		Address address
+		AddressRegisterPayload address
 ) {
 	
 }
