@@ -35,4 +35,13 @@ public class Doctor {
 	
 	@Embedded
 	private Address addres;
+	
+	public Doctor(DoctorRegisterPayload req) {
+		this.name = req.name();
+		this.email = req.email();
+		this.phone = req.phone();
+		this.crm = req.crm();
+		this.specialty = req.specialty();
+		this.addres = new Address(req.address());
+	}
 }
