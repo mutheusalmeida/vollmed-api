@@ -30,6 +30,8 @@ public class Doctor {
 	private String phone;
 	private String crm;
 	
+	private Boolean active;
+	
 	@Enumerated(EnumType.STRING)
 	private Specialty specialty;
 	
@@ -41,7 +43,27 @@ public class Doctor {
 		this.email = req.email();
 		this.phone = req.phone();
 		this.crm = req.crm();
+		this.active = true;
 		this.specialty = req.specialty();
 		this.address = new Address(req.address());
+	}
+
+	public void update(DoctorUpdatePayload req) {
+		if (req.name() != null) {
+			this.name = req.name();
+		}
+		
+		if (req.phone() != null) {
+			this.phone = req.phone();
+		}
+		
+		if (req.address() != null) {
+			this.address.update(req.address());
+		}
+		
+	}
+
+	public void delete() {
+		this.active = false;
 	}
 }
