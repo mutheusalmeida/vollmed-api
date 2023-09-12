@@ -39,10 +39,10 @@ public class DoctorController {
 		return doctorRepository.findAllByActiveTrue(pagination);
 	}
 	
-	@PutMapping
+	@PutMapping("/{id}")
 	@Transactional
-	public void update(@RequestBody @Valid DoctorUpdatePayload req) {
-		var doctor = doctorRepository.getReferenceById(req.id());
+	public void update(@PathVariable Long id, @RequestBody @Valid DoctorUpdatePayload req) {
+		var doctor = doctorRepository.getReferenceById(id);
 		doctor.update(req);
 	}
 	

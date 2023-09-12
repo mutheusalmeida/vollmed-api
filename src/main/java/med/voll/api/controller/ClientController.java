@@ -42,15 +42,15 @@ public class ClientController {
 	@PutMapping("/{id}")
 	@Transactional
 	public void update(@PathVariable Long id, @RequestBody @Valid ClientUpdatePayload req) {
-		var doctor = clientRepository.getReferenceById(id);
-		doctor.update(req);
+		var client = clientRepository.getReferenceById(id);
+		client.update(req);
 	}
 	
 	@DeleteMapping("/{id}")
 	@Transactional
 	public void delete(@PathVariable Long id) {
-		var doctor = clientRepository.getReferenceById(id);
-		doctor.delete();
+		var client = clientRepository.getReferenceById(id);
+		client.delete();
 	}
 
 }
