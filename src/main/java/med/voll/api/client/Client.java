@@ -28,6 +28,8 @@ public class Client {
 	private String phone;
 	private String cpf;
 	
+	private Boolean active;
+	
 	@Embedded
 	private Address address;
 	
@@ -36,6 +38,26 @@ public class Client {
 		this.email = req.email();
 		this.phone = req.phone();
 		this.cpf = req.cpf();
+		this.active = true;
 		this.address = new Address(req.address());
+	}
+
+	public void update(ClientUpdatePayload req) {
+		if (req.name() != null) {
+			this.name = req.name();
+		}
+		
+		if (req.phone() != null) {
+			this.phone = req.phone();
+		}
+		
+		if (req.address() != null) {
+			this.address.update(req.address());
+		}
+		
+	}
+
+	public void delete() {
+		this.active = false;
 	}
 }

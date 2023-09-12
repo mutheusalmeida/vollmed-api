@@ -1,9 +1,9 @@
 package med.voll.api.client;
 
-public record ClientListPayload(String name, String email, String phone) {
+public record ClientListPayload(Long id, String name, String email, String phone) {
 	
 	public ClientListPayload (Client client) {
-		this(client.getName(), client.getEmail(), client.getPhone());
+		this(client.getId(), client.getName(), client.getEmail(), client.getPhone());
 	}
 	
 }
