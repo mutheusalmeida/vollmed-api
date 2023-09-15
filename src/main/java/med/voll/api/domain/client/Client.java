@@ -1,4 +1,4 @@
-package med.voll.api.client;
+package med.voll.api.domain.client;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.voll.api.address.Address;
+import med.voll.api.domain.address.Address;
 
 @Table(name = "clients")
 @Entity(name = "Client")
@@ -33,7 +33,7 @@ public class Client {
 	@Embedded
 	private Address address;
 	
-	public Client(ClientRegisterPayload req) {
+	public Client(ClientRequestPayload req) {
 		this.name = req.name();
 		this.email = req.email();
 		this.phone = req.phone();
@@ -42,7 +42,7 @@ public class Client {
 		this.address = new Address(req.address());
 	}
 
-	public void update(ClientUpdatePayload req) {
+	public void update(ClientUpdateRequestPayload req) {
 		if (req.name() != null) {
 			this.name = req.name();
 		}

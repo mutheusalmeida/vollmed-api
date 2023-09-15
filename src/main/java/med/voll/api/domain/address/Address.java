@@ -1,4 +1,4 @@
-package med.voll.api.address;
+package med.voll.api.domain.address;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -22,7 +22,7 @@ public class Address {
     @Column(name = "zip_code")
     private String zipCode;
     
-    public Address(AddressRegisterPayload req) {
+    public Address(AddressRequestPayload req) {
     	this.street = req.street();
         this.number = req.number();
         this.complement = req.complement();
@@ -32,7 +32,7 @@ public class Address {
         this.zipCode = req.zipCode();
 	}
 
-	public void update(AddressRegisterPayload req) {
+	public void update(AddressUpdateRequestPayload req) {
 		if (req.street() != null) {
 			this.street = req.street();
 		}

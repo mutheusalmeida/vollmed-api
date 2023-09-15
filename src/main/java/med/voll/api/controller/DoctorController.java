@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +14,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.validation.Valid;
-import med.voll.api.doctor.Doctor;
-import med.voll.api.doctor.DoctorListPayload;
-import med.voll.api.doctor.DoctorRegisterPayload;
-import med.voll.api.doctor.DoctorRepository;
-import med.voll.api.doctor.DoctorUpdatePayload;
+import med.voll.api.domain.doctor.Doctor;
+import med.voll.api.domain.doctor.DoctorListResponsePayload;
+import med.voll.api.domain.doctor.DoctorRepository;
+import med.voll.api.domain.doctor.DoctorRequestPayload;
+import med.voll.api.domain.doctor.DoctorResponsePayload;
+import med.voll.api.domain.doctor.DoctorUpdateRequestPayload;
 
 @RestController
 @RequestMapping("doctors")
@@ -30,27 +33,45 @@ public class DoctorController {
 
 	@PostMapping
 	@Transactional
-	public void register(@RequestBody @Valid DoctorRegisterPayload req) {
-		doctorRepository.save(new Doctor(req));
+	public ResponseEntity<DoctorResponsePayload> register(@RequestBody @Valid DoctorRequestPayload req, UriComponentsBuilder uriBuilder) {
+		var doctor = doctorRepository.save(new Doctor(req));
+		
+		var uri = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.getId()).toUri();
+				
+		return ResponseEntity.created(uri).body(new DoctorResponsePayload(doctor));
 	}
 	
 	@GetMapping
-	public Page<DoctorListPayload> getDoctors (@PageableDefault(size = 10, sort = "name") Pageable pagination) {
-		return doctorRepository.findAllByActiveTrue(pagination);
+	public ResponseEntity<Page<DoctorListResponsePayload>> getDoctors(@PageableDefault(size = 10, sort = "name") Pageable pagination) {
+		var doctors = doctorRepository.findAllByActiveTrue(pagination);
+		
+		return ResponseEntity.ok(doctors);
 	}
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public void update(@PathVariable Long id, @RequestBody @Valid DoctorUpdatePayload req) {
+	public ResponseEntity<DoctorResponsePayload> update(@PathVariable Long id, @RequestBody @Valid DoctorUpdateRequestPayload req) {
 		var doctor = doctorRepository.getReferenceById(id);
 		doctor.update(req);
+		
+		return ResponseEntity.ok(new DoctorResponsePayload(doctor));
 	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<DoctorResponsePayload> getDoctor(@PathVariable Long id) {
+		var client = doctorRepository.getReferenceById(id);
+		
+		return ResponseEntity.ok(new DoctorResponsePayload(client));
+	}
+	
 	
 	@DeleteMapping("/{id}")
 	@Transactional
-	public void delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		var doctor =  doctorRepository.getReferenceById(id);
 		doctor.delete();
+		
+		return ResponseEntity.noContent().build();
 	}
 
 }
