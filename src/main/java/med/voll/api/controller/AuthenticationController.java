@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.api.domain.user.LoginUserRequestPayload;
-import med.voll.api.domain.user.TokenService;
 import med.voll.api.domain.user.User;
-import med.voll.api.domain.user.UserResponsePayload;
+import med.voll.api.infra.security.TokenService;
+import med.voll.api.domain.user.LoginUserResponsePayload;
 
 @RestController
 @RequestMapping("login")
@@ -28,10 +28,11 @@ public class AuthenticationController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<UserResponsePayload> login(@RequestBody @Valid LoginUserRequestPayload req) {
+	public ResponseEntity<LoginUserResponsePayload> login(@RequestBody @Valid LoginUserRequestPayload req) {
 		var token = new UsernamePasswordAuthenticationToken(req.username(), req.password());
 		var authentication = authenticationManager.authenticate(token);
+		var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
 		
-		return ResponseEntity.ok(new UserResponsePayload(tokenService.generateToken((User) authentication.getPrincipal())));
+		return ResponseEntity.ok(new LoginUserResponsePayload(tokenJWT));
 	}
 }

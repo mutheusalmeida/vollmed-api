@@ -1,6 +1,6 @@
 package med.voll.api.domain.user;
 
-public record UserResponsePayload(
+public record LoginUserResponsePayload(
 		String token
 		) {
 
